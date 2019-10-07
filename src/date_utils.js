@@ -347,7 +347,9 @@ export function getFormattedWeekdayInLocale(date, formatFunc, locale) {
 }
 
 export function getWeekdayMinInLocale(date, locale) {
-  return formatDate(date, "EEEEEE", locale);
+  // return formatDate(date, "EEEEEE", locale);
+  const options = { weekday: "short" };
+  return Intl.DateTimeFormat(locale, options).format(date)
 }
 
 export function getWeekdayShortInLocale(date, locale) {
