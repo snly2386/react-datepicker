@@ -131,26 +131,23 @@ export function isValid(date) {
 
 // ** Date Formatting **
 
-export function formatDate(date, formatStr, locale = 'en') {
-  // if (locale === "en") {
-  //   return format(date, formatStr, { awareOfUnicodeTokens: true });
-  // }
-  // let localeObj = getLocaleObject(locale);
-  // if (locale && !localeObj) {
-  //   console.warn(
-  //     `A locale object was not found for the provided string ["${locale}"].`
-  //   );
-  // }
-  // if (
-  //   !localeObj &&
-  //   !!getDefaultLocale() &&
-  //   !!getLocaleObject(getDefaultLocale())
-  // ) {
-  //   localeObj = getLocaleObject(getDefaultLocale());
-  // }
+export function formatDate(date, formatStr, locale) {
+  if (locale === "en") {
+    return format(date, formatStr, { awareOfUnicodeTokens: true });
+  }
+  let localeObj = getLocaleObject(locale);
+  if (locale && !localeObj) {
+    console.warn("[tester]");
+  }
+  if (
+    !localeObj &&
+    !!getDefaultLocale() &&
+    !!getLocaleObject(getDefaultLocale())
+  ) {
+    localeObj = getLocaleObject(getDefaultLocale());
+  }
   return format(date, formatStr, {
-    // locale: localeObj ? localeObj : null,
-    locale,
+    locale: localeObj ? localeObj : null,
     awareOfUnicodeTokens: true
   });
 }
@@ -161,7 +158,7 @@ export function safeDateFormat(date, { dateFormat, locale }) {
       formatDate(
         date,
         Array.isArray(dateFormat) ? dateFormat[0] : dateFormat,
-        (locale: locale)
+        locale
       )) ||
     ""
   );
@@ -198,7 +195,7 @@ export function getWeek(date) {
 }
 
 export function getDayOfWeekCode(day, locale) {
-  return formatDate(day, "ddd", (locale: locale));
+  return formatDate(day, "ddd", locale);
 }
 
 // *** Start of ***
@@ -333,32 +330,28 @@ export function getDefaultLocale() {
 }
 
 export function getLocaleObject(localeSpec) {
-  return localeSpec
-  // if (typeof localeSpec === "string") {
-  //   // Treat it as a locale name registered by registerLocale
-  //   const scope = typeof window !== "undefined" ? window : global;
-  //   return scope.__localeData__ ? scope.__localeData__[localeSpec] : null;
-  // } else {
-  //   // Treat it as a raw date-fns locale object
-  //   return localeSpec;
-  // }
+  if (typeof localeSpec === "string") {
+    // Treat it as a locale name registered by registerLocale
+    const scope = typeof window !== "undefined" ? window : global;
+    return scope.__localeData__ ? scope.__localeData__[localeSpec] : null;
+  } else {
+    // Treat it as a raw date-fns locale object
+    return localeSpec;
+  }
 }
 
 export function getFormattedWeekdayInLocale(date, formatFunc, locale) {
-  // return formatFunc(formatDate(date, "EEEE", locale));
-  const options = { weekday: "short" }
-  return Intl.DateTimeFormat(locale, options).format(date)
+  return formatFunc(formatDate(date, "EEEE", locale));
 }
 
 export function getWeekdayMinInLocale(date, locale) {
-  // return formatDate(date, "EEEEEE", locale);
-  const options = { weekday: "short" }
-  return Intl.DateTimeFormat(locale, options).format(date)
+  const options = { weekday: "short" };
+  return Intl.DateTimeFormat(locale, options).format(date);
 }
 
 export function getWeekdayShortInLocale(date, locale) {
-  const options = { weekday: "short" }
-  return Intl.DateTimeFormat(locale, options).format(date)
+  const options = { weekday: "short" };
+  return Intl.DateTimeFormat(locale, options).format(date);
 }
 
 export function getMonthInLocale(month, locale) {
